@@ -8,15 +8,18 @@ public class FileReader {
 
 	public Profile getDataFromFile(File file) {
 		String path = file.getPath();		
-		String name = "", age = "", email = "", phone = "";
+		String name = "";
+		String age = "";
+		String email = "";
+		String phone = "";
 		try (FileInputStream is = new FileInputStream(path)) {
-			String fileString = "";
+			StringBuilder fileString = new StringBuilder();
 			int ch;
 			while ((ch = is.read()) != -1) {
-				fileString += (char)ch;
+				fileString.append((char)ch);
 			} 
 
-			String[] profileValues = fileString.split("\n", 0);
+			String[] profileValues = fileString.toString().split("\n", 0);
 			for (int i = 0; i < profileValues.length; ++i) {
 				if (profileValues[i].contains("Name")) {
 					name = profileValues[i].substring(profileValues[i].indexOf(":") + 2);
@@ -32,8 +35,6 @@ public class FileReader {
 			ex.printStackTrace();
 		}
 
-		Profile profile = new Profile(name, Integer.valueOf(age), email, Long.valueOf(phone));
-
-		return profile;
+		return new Profile(name, Integer.valueOf(age), email, Long.valueOf(phone));
 	}
 }
